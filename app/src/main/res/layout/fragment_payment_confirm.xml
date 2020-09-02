@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/nogozo_icon"
+        android:layout_width="150dp"
+        android:layout_height="?attr/actionBarSize"
+        android:src="@drawable/nogozo_header_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:text="Delivery:"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/deliveryStatus"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/deliveryStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Not Delivering"
+        android:textSize="16sp"
+        android:layout_margin="12dp"
+        android:textColor="@color/colorPrimaryLight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toTopOf="@id/customer_confirm_confirm_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nogozo_icon">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/customer_confirm_items_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="ITEMS"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/customer_confirm_items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/customer_confirm_items_header" />
+
+            <View
+                android:id="@+id/seperator1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_margin="8dp"
+                android:background="@color/grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/customer_confirm_items" />
+
+            <View
+                android:id="@+id/seperator2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_margin="8dp"
+                android:background="@color/grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/customer_confirm_instruction" />
+            <!--            <TextView-->
+            <!--                android:id="@+id/customer_confirm_instruction_header"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_margin="8dp"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/customer_confirm_price_wrapper"-->
+            <!--                android:text="Instruction for Shop"/>-->
+
+            <Spinner
+                android:id="@+id/deliveryModeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:layout_constraintTop_toBottomOf="@id/seperator1" />
+
+            <EditText
+                android:id="@+id/customer_confirm_instruction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:drawableStart="@drawable/ic_shopkeeper_instructions"
+                android:hint="Instruction for Shop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/deliveryModeSpinner" />
+
+            <!--       <RadioGroup
+                       android:id="@+id/radioGroup"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_margin="8dp"
+                       app:layout_constraintStart_toStartOf="parent"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintTop_toBottomOf="@id/customer_confirm_instruction">
+                       <com.google.android.material.radiobutton.MaterialRadioButton
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="Pickup and pay at shop"/>
+                       <com.google.android.material.radiobutton.MaterialRadioButton
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="Prepaid and Pickup at Shop"/>
+                       <com.google.android.material.radiobutton.MaterialRadioButton
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="Prepaid and Home Delivery"/>
+                       <com.google.android.material.radiobutton.MaterialRadioButton
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="Home Delivery COD"/>
+                   </RadioGroup> -->
+
+            <LinearLayout
+                android:id="@+id/customer_confirm_price_wrapper"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/seperator2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Item Total"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/customer_confirm_base_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Delivery Charges"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/delivery_charges"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Grand Total"
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/customer_confirm_total_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/customer_confirm_progressbar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/select_delivery_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Please select a delivery mode"
+        android:textSize="18sp"
+        android:textColor="@color/colorPrimaryLight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customer_confirm_progressbar" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/customer_confirm_confirm_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Confirm Order"
+        android:visibility="gone"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

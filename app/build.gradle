@@ -1,0 +1,102 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "com.anvesh.nogozocustomerapplication"
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.1'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+
+
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    implementation 'com.google.android.material:material:1.1.0'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+
+    //GSON CONVERTER
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    //Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0'
+
+    //GoogleMap
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.maps:google-maps-services:0.2.11'
+
+    //ViewPager
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+
+    //Dots
+    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
+
+    //CircularImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //FIREBASE CORE
+    //implementation 'com.google.firebase:firebase-core:19.3.'
+
+    //FIREBASE AUTH
+    implementation 'com.google.firebase:firebase-auth-ktx:19.3.2'
+
+    //FIREBASE DATABASE
+    implementation 'com.google.firebase:firebase-database-ktx:19.3.1'
+
+    //FIREBASE STORAGE
+    implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
+    implementation 'com.firebaseui:firebase-ui-storage:4.3.1'
+
+    //FIREBASE MESSAGING
+    implementation 'com.google.firebase:firebase-messaging:20.2.1'
+
+    //FIREBASE FUNCTION
+    implementation 'com.google.firebase:firebase-functions:19.0.2'
+
+    //ImageCropper
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+
+    //Drawer
+    implementation 'com.mikepenz:materialdrawer:7.0.0'
+
+    //Swipe to refresh
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    //Elastic View
+    implementation 'com.github.armcha:ElasticView:0.1.0'
+}

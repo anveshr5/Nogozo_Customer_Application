@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "716443204242",
+    "firebase_url": "https://abcd-d2b2b.firebaseio.com",
+    "project_id": "abcd-d2b2b",
+    "storage_bucket": "abcd-d2b2b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716443204242:android:6a1fba99c00d43d811444b",
+        "android_client_info": {
+          "package_name": "com.anvesh.nogozocustomerapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "716443204242-vjgqt3i4rp2v5eq9k3l1433jq2ppo8sj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5_0KYr--zKVXj64RJYjZzlioTC_Slaxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "716443204242-9a958k4eqs44am156ggg3tjlp31a9958.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716443204242:android:242c8239a3e4965e11444b",
+        "android_client_info": {
+          "package_name": "com.startup.customernogozo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "716443204242-vjgqt3i4rp2v5eq9k3l1433jq2ppo8sj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5_0KYr--zKVXj64RJYjZzlioTC_Slaxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "716443204242-9a958k4eqs44am156ggg3tjlp31a9958.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716443204242:android:9b038c8580e209b211444b",
+        "android_client_info": {
+          "package_name": "com.startup.startup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "716443204242-s50dqnto3ivba83e2tg3inuuevubn1n9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.startup.startup",
+            "certificate_hash": "e005468e2a0fda2a119b3c2c60a31b7cc71d0b4f"
+          }
+        },
+        {
+          "client_id": "716443204242-vjgqt3i4rp2v5eq9k3l1433jq2ppo8sj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5_0KYr--zKVXj64RJYjZzlioTC_Slaxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "716443204242-9a958k4eqs44am156ggg3tjlp31a9958.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

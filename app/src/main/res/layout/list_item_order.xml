@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="3dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <TextView
+            android:id="@+id/list_item_current_order_id_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OrderID:"
+            android:layout_margin="8dp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/list_item_current_order_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="XXX/00/000"
+            android:layout_margin="8dp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/list_item_current_order_id_tag" />
+
+        <TextView
+            android:id="@+id/list_item_current_order_shopname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ShopName"
+            android:textSize="24sp"
+            android:layout_margin="8dp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@id/list_item_current_order_id_tag"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/seperator1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_margin="8dp"
+            app:layout_constraintTop_toBottomOf="@id/list_item_current_order_shopname"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/grey"/>
+
+        <TextView
+            android:id="@+id/list_item_header_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ITEMS"
+            android:textSize="12sp"
+            android:layout_margin="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/seperator1"/>
+
+        <TextView
+            android:id="@+id/list_item_current_order_items"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="this is text"
+            android:drawableStart="@drawable/ic_receipt"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/list_item_header_item"/>
+
+        <TextView
+            android:id="@+id/list_item_header_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ordered On"
+            android:textSize="12sp"
+            android:layout_margin="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/list_item_current_order_items"/>
+
+        <TextView
+            android:id="@+id/list_item_current_order_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date on time"
+            android:drawableStart="@drawable/ic_calendar"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/list_item_header_time"/>
+
+        <TextView
+            android:id="@+id/list_item_header_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Amount"
+            android:textSize="12sp"
+            android:layout_margin="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/list_item_current_order_date_time"/>
+
+        <TextView
+            android:id="@+id/list_item_current_order_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:drawableStart="@drawable/ic_rupee_indian"
+            android:drawableTint="#ED5E9BD3"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toBottomOf="@id/list_item_header_price"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <View
+            android:id="@+id/seperator2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_margin="8dp"
+            app:layout_constraintTop_toBottomOf="@id/list_item_current_order_price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/grey"/>
+
+        <TextView
+            android:id="@+id/list_item_current_order_instruction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_margin="8dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/seperator2" />
+
+        <TextView
+            android:id="@+id/list_item_current_order_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/colorAccent"
+            android:text="Status: "
+            android:layout_margin="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/list_item_current_order_instruction"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/list_item_current_order_markpacked_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Mark Packed"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/list_item_current_order_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

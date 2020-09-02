@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/customer_profile_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Profile"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:layout_marginTop="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/customer_profile_name_wrapper"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="Name"
+        app:startIconDrawable="@drawable/ic_profile"
+        app:startIconTint="@color/colorPrimaryLight"
+        android:textColorHint="@color/colorAccent"
+        app:boxStrokeColor="@color/colorAccent"
+        app:layout_constraintTop_toBottomOf="@+id/customer_profile_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/customer_profile_name_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/customer_profile_phone_wrapper"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="Phone Number"
+        app:startIconDrawable="@drawable/ic_phone"
+        app:startIconTint="@color/colorPrimaryLight"
+        android:textColorHint="@color/colorAccent"
+        app:boxStrokeColor="@color/colorAccent"
+        app:layout_constraintTop_toBottomOf="@+id/customer_profile_name_wrapper"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/customer_profile_phone_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:inputType="phone"
+            android:maxLength="10"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/customer_profile_city_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/customer_profile_phone_wrapper"
+        app:cardCornerRadius="3dp"
+        app:cardElevation="3dp">
+        <TextView
+            android:id="@+id/customer_profile_city_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:text="Select Your City"
+            android:layout_margin="8dp"
+            android:drawableEnd="@drawable/ic_greater_symbol"
+            />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/customer_profile_area_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/customer_profile_city_wrapper"
+        app:cardCornerRadius="3dp"
+        app:cardElevation="3dp">
+        <TextView
+            android:id="@+id/customer_profile_area_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:text="Select Your Area"
+            android:layout_margin="8dp"
+            android:drawableEnd="@drawable/ic_greater_symbol"
+            />
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/customer_profile_address_wrapper"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="Address"
+        app:startIconDrawable="@drawable/ic_location_edit"
+        app:startIconTint="@color/colorPrimaryLight"
+        app:hintTextColor="@color/colorAccent"
+        android:textColorHint="@color/colorAccent"
+        app:boxStrokeColor="@color/colorAccent"
+        app:layout_constraintTop_toBottomOf="@+id/customer_profile_area_wrapper"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/customer_profile_address_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:inputType="textPostalAddress"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/customer_profile_confirm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        style="@style/Widget.MaterialComponents.Button"
+        app:cornerRadius="16dp"
+        android:text="Save Changes"
+        android:drawableEnd="@drawable/ic_check"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/customer_profile_progressbar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:elevation="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
