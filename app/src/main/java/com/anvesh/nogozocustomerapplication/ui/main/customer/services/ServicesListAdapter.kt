@@ -38,7 +38,7 @@ class ServicesListAdapter( private val onServiceClickInterface: OnServicesClickI
     fun setData(dataList: List<Services>){
         this.dataList = dataList
         notifyDataSetChanged()
-        GlobalSearchFragment.searchQuery = null
+        //GlobalSearchFragment.searchQuery = null
     }
 
     fun getItemAt(position: Int): Services{

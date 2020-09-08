@@ -54,7 +54,6 @@ class CustomerAuthFragment: BaseFragment(R.layout.fragment_auth_customer_signin)
     private lateinit var cc1: ConstraintLayout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //nameField = view.findViewById(R.id.customer_name_field)
         emailField = view.findViewById(R.id.customer_email_field)
         passwordField = view.findViewById(R.id.customer_password_field)
         progressBar = view.findViewById(R.id.auth_customer_progressBar)
@@ -186,16 +185,6 @@ class CustomerAuthFragment: BaseFragment(R.layout.fragment_auth_customer_signin)
         }
     }
 
-    private fun showToast(msg: String){
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
-    }
-
-    private fun uploadToken(){
-        val sp = context!!.getSharedPreferences("notification", MODE_PRIVATE)
-        if(sp.contains("token"))
-            viewModel.uploadToken(sp.getString("token","")!!)
-    }
-
     private fun animate(){
 
         viewType = if(viewType == viewType_SIGNIN) viewType_SIGNUP else viewType_SIGNIN
@@ -227,5 +216,15 @@ class CustomerAuthFragment: BaseFragment(R.layout.fragment_auth_customer_signin)
             }
         constraint.applyTo(cc1)
 
+    }
+
+    private fun showToast(msg: String){
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+    }
+
+    fun uploadToken(){
+        val sp = context!!.getSharedPreferences("notification", MODE_PRIVATE)
+        if(sp.contains("token"))
+            viewModel.uploadToken(sp.getString("token","")!!)
     }
 }

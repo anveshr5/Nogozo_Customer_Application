@@ -17,14 +17,17 @@ import com.anvesh.nogozocustomerapplication.util.Constants.DIALOG_TYPE_CITY
 import com.anvesh.nogozocustomerapplication.util.Helper
 import com.anvesh.nogozocustomerapplication.R
 import com.anvesh.nogozocustomerapplication.datamodels.Area
+import com.anvesh.nogozocustomerapplication.datamodels.AreaId
 import com.anvesh.nogozocustomerapplication.datamodels.City
 import com.anvesh.nogozocustomerapplication.datamodels.CustomerProfile
 import com.anvesh.nogozocustomerapplication.ui.BaseFragment
 import com.anvesh.nogozocustomerapplication.ui.ViewModelFactory
 import com.anvesh.nogozocustomerapplication.ui.main.DataResource
+import com.anvesh.nogozocustomerapplication.ui.userdetails.AreaIdListAdapter
 import com.anvesh.nogozocustomerapplication.ui.userdetails.AreaListAdapter
 import com.anvesh.nogozocustomerapplication.ui.userdetails.CityListAdapter
 import com.anvesh.nogozocustomerapplication.ui.userdetails.CityResource
+import com.anvesh.nogozocustomerapplication.util.Constants.DIALOG_TYPE_PINCODE
 import javax.inject.Inject
 
 class CustomerProfileFragment: BaseFragment(R.layout.fragment_profile_customer), View.OnClickListener {
@@ -36,8 +39,10 @@ class CustomerProfileFragment: BaseFragment(R.layout.fragment_profile_customer),
 
     private lateinit var citySpinner: TextView
     private lateinit var areaSpinner: TextView
+    private lateinit var areaIdSpinner: TextView
     private lateinit var cityCard: CardView
     private lateinit var areaCard: CardView
+    private lateinit var areaIdCard: CardView
     private lateinit var addressField: TextInputEditText
     private lateinit var nameField: TextInputEditText
     private lateinit var phoneField: TextInputEditText
@@ -46,6 +51,7 @@ class CustomerProfileFragment: BaseFragment(R.layout.fragment_profile_customer),
 
     private var selectedCity: City? = null
     private var selectedArea: Area? = null
+    private var selectedAreaId: AreaId? = null
     private var selectedAddress: String? = null
 
     private var oldProfile: CustomerProfile? = null
@@ -56,6 +62,7 @@ class CustomerProfileFragment: BaseFragment(R.layout.fragment_profile_customer),
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[CustomerProfileFragmentViewModel::class.java]
 
         progressBar = view.findViewById(R.id.customer_profile_progressbar)
+        areaIdCard = view.findViewById(R.id.customer_profile_area_id_wrapper)
         areaCard = view.findViewById(R.id.customer_profile_area_wrapper)
         cityCard = view.findViewById(R.id.customer_profile_city_wrapper)
         addressField = view.findViewById(R.id.customer_profile_address_field)
@@ -65,6 +72,8 @@ class CustomerProfileFragment: BaseFragment(R.layout.fragment_profile_customer),
         citySpinner.setOnClickListener(this)
         areaSpinner = view.findViewById(R.id.customer_profile_area_view)
         areaSpinner.setOnClickListener(this)
+        areaIdSpinner = view.findViewById(R.id.customer_profile_area_id_view)
+        areaIdSpinner.setOnClickListener(this)
         confirmButton = view.findViewById(R.id.customer_profile_confirm_button)
         confirmButton.setOnClickListener(this)
 
@@ -110,10 +119,12 @@ class CustomerProfileFragment: BaseFragment(R.layout.fragment_profile_customer),
     private fun setDatatoViews(profile: CustomerProfile){
         selectedArea = Area(profile.areaname!!, profile.areaid!!)
         selectedCity = City(profile.cityname!!, profile.cityid!!)
+        selectedAreaId = AreaId(profile.areaid!!, profile.areaid!!.takeLast(2))
         selectedAddress = profile.address!!
 
         areaSpinner.text = selectedArea!!.areaName
         citySpinner.text = selectedCity!!.cityName
+        areaIdSpinner.text = selectedAreaId!!.areaId
 
         addressField.setText(selectedAddress)
         nameField.setText(profile.name)
@@ -128,6 +139,9 @@ class CustomerProfileFragment: BaseFragment(R.layout.fragment_profile_customer),
             }
             R.id.customer_profile_area_view -> {
                 openDialogForSelecting(DIALOG_TYPE_AREA, cityid = selectedCity!!.cityId)
+            }
+            R.id.customer_profile_area_id_view -> {
+                openDialogForSelecting(DIALOG_TYPE_PINCODE, selectedCity!!.cityId)
             }
             R.id.customer_profile_confirm_button -> {
                 updateUserProfile()
@@ -225,6 +239,47 @@ class CustomerProfileFragment: BaseFragment(R.layout.fragment_profile_customer),
                     }
                 }
             })
+        } else if(type == DIALOG_TYPE_PINCODE){
+            header.text = "Choose Your Pincode"
+            viewModel.getAreaIdsOfCity(cityid).removeObservers(viewLifecycleOwner)
+
+            viewModel.getAreaIdsOfCity(cityid).observe(viewLifecycleOwner, Observer {
+                when(it.status){
+                    CityResource.CityStatus.SUCCESS->{
+                        progressBar.visibility = View.INVISIBLE
+
+                        searchView.setQuery("",false)
+                        val adapter = AreaIdListAdapter()
+                        listView.adapter = adapter
+                        adapter.setOriginalList(it.data)
+
+                        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+                            override fun onQueryTextSubmit(query: String?): Boolean {
+                                return false
+                            }
+
+                            override fun onQueryTextChange(newText: String?): Boolean {
+                                adapter.getFilter().filter(newText)
+                                return true
+                            }
+                        })
+
+                        listView.onItemClickListener = AdapterView.OnItemClickListener{ parent, view, position, id ->
+                            if(adapter.getItem(position).areaNum != "-1"){
+                                onAreaIdSelected(adapter.getItem(position))
+                                dialog.dismiss()
+                            }
+                        }
+                    }
+                    CityResource.CityStatus.LOADING -> {
+                        progressBar.visibility = View.VISIBLE
+                    }
+                    CityResource.CityStatus.ERROR -> {
+                        progressBar.visibility = View.INVISIBLE
+                        Toast.makeText(context, "Something Went Wrong", Toast.LENGTH_LONG).show()
+                    }
+                }
+            })
         }
 
         dialog.show()
@@ -250,11 +305,19 @@ class CustomerProfileFragment: BaseFragment(R.layout.fragment_profile_customer),
     private fun onAreaSelected(area: Area){
         selectedArea = area
         areaSpinner.text = area.areaName
-        newProfile!!.areaid = area.areaId
         newProfile!!.areaname = area.areaName
         //addressCard.visibility = View.VISIBLE
         checkAndShowButton()
     }
+
+    private fun onAreaIdSelected(area: AreaId){
+        selectedAreaId = area
+        newProfile!!.areaid = area.areaId
+        areaIdSpinner.text = area.areaId
+        //addressWrapper.visibility = View.VISIBLE
+        checkAndShowButton()
+    }
+
 
     private fun updateUserProfile(){
 
@@ -293,7 +356,7 @@ class CustomerProfileFragment: BaseFragment(R.layout.fragment_profile_customer),
         map["cityname"] = selectedCity!!.cityName
         map["cityid"] = selectedCity!!.cityId
         map["areaname"] = selectedArea!!.areaName
-        map["areaid"] = selectedArea!!.areaId
+        map["areaid"] = selectedAreaId!!.areaId
         map["profilelevel"] = Constants.PROFILE_LEVEL_1
 
         newProfile!!.profilelevel = Constants.PROFILE_LEVEL_1

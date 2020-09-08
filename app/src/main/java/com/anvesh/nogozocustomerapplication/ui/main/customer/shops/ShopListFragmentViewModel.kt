@@ -1,5 +1,6 @@
 package com.anvesh.nogozocustomerapplication.ui.main.customer.shops
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
@@ -55,10 +56,11 @@ class ShopListFragmentViewModel
                                         shop["shopname"]!!,
                                         key,
                                         shop["imageurl"],
-                                        null,
+                                        shop["status"],
                                         shop["areaid"]
                                     )
                                 )
+                                Log.d("shopp", shop.toString())
                             }
                             shopList.postValue(DataResource.success(shops))
                         } else {

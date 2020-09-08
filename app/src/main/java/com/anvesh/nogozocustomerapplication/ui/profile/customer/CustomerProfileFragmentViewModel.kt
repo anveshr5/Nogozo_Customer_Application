@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.anvesh.nogozocustomerapplication.SessionManager
 import com.anvesh.nogozocustomerapplication.datamodels.Area
+import com.anvesh.nogozocustomerapplication.datamodels.AreaId
 import com.anvesh.nogozocustomerapplication.datamodels.City
 import com.anvesh.nogozocustomerapplication.datamodels.CustomerProfile
 import com.anvesh.nogozocustomerapplication.network.Database
@@ -32,6 +33,7 @@ class CustomerProfileFragmentViewModel
 
     private var cities: MediatorLiveData<CityResource<List<City>>> = MediatorLiveData()
     private var areas: MediatorLiveData<CityResource<List<Area>>> = MediatorLiveData()
+    private var areaids: MediatorLiveData<CityResource<List<AreaId>>> = MediatorLiveData()
     private var userProfile: MediatorLiveData<DataResource<CustomerProfile>> = MediatorLiveData()
 
     fun getCities(): LiveData<CityResource<List<City>>> {
@@ -78,6 +80,28 @@ class CustomerProfileFragmentViewModel
         })
 
         return areas
+    }
+
+    fun getAreaIdsOfCity(cityId: String): LiveData<CityResource<List<AreaId>>>{
+        areaids.value = CityResource.loading()
+
+        Database().getAreaIds(cityId).addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                areaids.value = CityResource.error(error.message)
+            }
+            override fun onDataChange(snapshot: DataSnapshot) {
+                CoroutineScope(Dispatchers.Default).launch{
+                    val list: ArrayList<AreaId> = ArrayList()
+                    val map = snapshot.value as HashMap<String, String>
+                    for((key, value) in map){
+                        list.add(AreaId(value, key))
+                    }
+                    areaids.postValue(CityResource.success(list))
+                }
+            }
+        })
+
+        return areaids
     }
 
     fun getUserProfile() {

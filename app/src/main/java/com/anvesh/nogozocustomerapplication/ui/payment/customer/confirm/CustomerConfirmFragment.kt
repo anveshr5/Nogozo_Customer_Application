@@ -15,6 +15,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.anvesh.nogozocustomerapplication.R
+import com.anvesh.nogozocustomerapplication.SessionManager
+import com.anvesh.nogozocustomerapplication.datamodels.VendorProfile
 import com.anvesh.nogozocustomerapplication.network.Database
 import com.anvesh.nogozocustomerapplication.ui.BaseFragment
 import com.anvesh.nogozocustomerapplication.ui.main.DataResource
@@ -39,7 +41,6 @@ class CustomerConfirmFragment : BaseFragment(R.layout.fragment_payment_confirm),
 
     private lateinit var viewModel: CustomerConfirmFragmentViewModel
 
-    private lateinit var deliveryStatus: TextView
     private lateinit var confirmButton: MaterialButton
     private lateinit var itemsText: TextView
     private lateinit var deliveryChargesView: TextView
@@ -48,7 +49,11 @@ class CustomerConfirmFragment : BaseFragment(R.layout.fragment_payment_confirm),
     private lateinit var instruction: TextView
     private lateinit var priceWrapper: LinearLayout
     private lateinit var progressBar: ProgressBar
+    private lateinit var deliveryStatus: TextView
     private lateinit var selectDeliveryTag: TextView
+    private lateinit var addAmountForFreeDeliveryWrapper: LinearLayout
+    private lateinit var addAmountForFreeDelivery: TextView
+    //private lateinit var deliveryChargesLayout: LinearLayout
 
     private lateinit var deliveryModeSpinner: Spinner
     var modeOfDeliverySelect: Boolean = false
@@ -57,6 +62,7 @@ class CustomerConfirmFragment : BaseFragment(R.layout.fragment_payment_confirm),
     var deliveryCharges = 0
     var minAmount = 10000
 
+    lateinit var vendor: VendorProfile
     private lateinit var orderData: HashMap<String, Any>
     private lateinit var fare: HashMap<String, String>
     private var totalFare: Int = 0
@@ -69,6 +75,8 @@ class CustomerConfirmFragment : BaseFragment(R.layout.fragment_payment_confirm),
         deliveryStatus = view.findViewById(R.id.deliveryStatus)
         itemsText = view.findViewById(R.id.customer_confirm_items)
         deliveryChargesView = view.findViewById(R.id.delivery_charges)
+        addAmountForFreeDelivery = view.findViewById(R.id.customer_free_delivery_amount)
+        addAmountForFreeDeliveryWrapper = view.findViewById(R.id.addAmountForFreeDeliveryTag)
         grandTotal = view.findViewById(R.id.customer_confirm_total_price)
         deliveryModeSpinner = view.findViewById(R.id.deliveryModeSpinner)
         itemPrice = view.findViewById(R.id.customer_confirm_base_price)
@@ -87,52 +95,54 @@ class CustomerConfirmFragment : BaseFragment(R.layout.fragment_payment_confirm),
         viewModel.getOrderNo(orderData["shopid"].toString())
         viewModel.getFare(orderData["itemprice"] as String, orderData["shopareaid"] as String)
 
-        getPincodes()
+        getVendorProfile()
         setOrderItemsToText()
     }
 
-    private fun getPincodes() {
-        val userPincode = viewModel.getUserPincode()
-        Log.d("pincode", userPincode)
-        viewModel.getShopPincodeLiveData().removeObservers(viewLifecycleOwner)
-        viewModel.getShopPincodeLiveData().observe(viewLifecycleOwner, Observer {
-            if (it == userPincode) {
-                isDeliverable = true
-                getCurrentDeliveryStatus()
-                pincode = it
-                Log.d("pincode", userPincode + "   $it")
-            } else {
-                isDeliverable = false
-                deliveryStatus.text = "Location too far"
-                deliveryStatus.setTextColor(resources.getColor(R.color.red, resources.newTheme()))
-                setUpNoDeliverySpinner()
-            }
+    private fun getVendorProfile() {
+        viewModel.getVendorProfileLiveData().removeObservers(viewLifecycleOwner)
+
+        viewModel.getVendorProfileLiveData().observe(viewLifecycleOwner, Observer {
+            vendor = it
+            getPincodes()
         })
-        viewModel.getShopPincode(orderData["shopid"].toString())
+
+        viewModel.getVendorProfile(orderData["shopid"].toString())
+    }
+
+    private fun getPincodes() {
+        val userPincode = SessionManager().getAreaId()
+        pincode = vendor.areaid.toString()
+        if (vendor.areaid == userPincode) {
+            isDeliverable = true
+            getCurrentDeliveryStatus()
+            Log.d("pincode", userPincode + " 6  $pincode")
+        } else {
+            isDeliverable = false
+            deliveryStatus.text = "Location too far"
+            Log.d("pincode", userPincode + "   $pincode")
+            deliveryStatus.setTextColor(resources.getColor(R.color.red, resources.newTheme()))
+            setUpNoDeliverySpinner()
+        }
     }
 
     private fun getMinAmountDelivery() {
-        viewModel.getDeliveryMinOrderLiveData().removeObservers(viewLifecycleOwner)
-
-        viewModel.getDeliveryMinOrderLiveData().observe(viewLifecycleOwner, Observer {
-            minAmount = it.toInt()
-            if (minAmount <= orderData["itemprice"].toString().toInt()) {
-                freeDelivery = true
-                setUpDeliverySpinner(freeDelivery)
-            } else {
-                freeDelivery = false
-                setUpDeliverySpinner(freeDelivery)
-                getDeliveryCharges()
-                Toast.makeText(
-                    activity as Context,
-                    "Add ₹${
-                        minAmount - orderData["itemprice"].toString().toInt()
-                    } to avail free delivery",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
-        viewModel.getDeliveryMinOrder(orderData["shopid"].toString())
+        minAmount = vendor.deliveryminorder!!.toInt()
+        if (minAmount <= orderData["itemprice"].toString().toInt()) {
+            freeDelivery = true
+            setUpDeliverySpinner(freeDelivery)
+        } else {
+            freeDelivery = false
+            setUpDeliverySpinner(freeDelivery)
+            getDeliveryCharges()
+            Toast.makeText(
+                activity as Context,
+                "Add ₹${
+                    minAmount - orderData["itemprice"].toString().toInt()
+                } to avail free delivery",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun getCurrentDeliveryStatus() {
@@ -156,12 +166,13 @@ class CustomerConfirmFragment : BaseFragment(R.layout.fragment_payment_confirm),
     }
 
     private fun setUpDeliverySpinner(freeDelivery: Boolean) {
+        progressBar.visibility = View.GONE
         val itemList = arrayOf(
             "Select mode of delivery",
             "Pickup and pay at shop",
             //"Prepaid and pickup at Shop",
             //"Prepaid and Home Delivery",
-            "Cash on Home Delivery"
+            "Pay on Home Delivery"
         )
 
         deliveryModeSpinner.adapter = ArrayAdapter(
@@ -183,7 +194,7 @@ class CustomerConfirmFragment : BaseFragment(R.layout.fragment_payment_confirm),
                     }
                     1 -> {
                         modeOfDeliverySelect = true
-                    //  orderData["paid"] = "No"
+                        //  orderData["paid"] = "No"
                         orderData["delivery"] = "No"
                         updateBill("nodelivery")
                     }
@@ -204,7 +215,7 @@ class CustomerConfirmFragment : BaseFragment(R.layout.fragment_payment_confirm),
                         modeOfDeliverySelect = true
                         orderData["delivery"] = "Yes"
                         orderData["deliverycharges"] = deliveryCharges.toString()
-                    //  orderData["paid"] = "No"
+                        //  orderData["paid"] = "No"
                         updateDeliveryBill(freeDelivery)
                     }
                 }
@@ -238,20 +249,17 @@ class CustomerConfirmFragment : BaseFragment(R.layout.fragment_payment_confirm),
     }
 
     private fun getDeliveryCharges() {
-        viewModel.getDeliveryChargesLiveData().removeObservers(viewLifecycleOwner)
-
-        viewModel.getDeliveryChargesLiveData().observe(viewLifecycleOwner, Observer {
-            deliveryCharges = it.toInt()
-            deliveryChargesView.text = it.toString()
-        })
-        viewModel.getDeliveryCharges(orderData["shopid"].toString())
+        deliveryCharges = vendor.deliverycharges!!.toInt()
+        deliveryChargesView.text = "₹${vendor.deliverycharges!!}"
     }
 
     private fun setUpNoDeliverySpinner() {
+        progressBar.visibility = View.GONE
         val itemList = arrayOf(
             //"Select mode of payment",
-            "Pay and pickup at shop"
+            "Pay and pickup at shop",
             //"Prepaid and pickup at Shop"
+            "Pay On Home Delivery(Not Available)"
         )
         deliveryModeSpinner.adapter = ArrayAdapter(
             context!!.applicationContext,
@@ -272,7 +280,7 @@ class CustomerConfirmFragment : BaseFragment(R.layout.fragment_payment_confirm),
                     //}
                     0 -> {
                         modeOfDeliverySelect = true
-                    //  orderData["paid"] = "No"
+                        //  orderData["paid"] = "No"
                         updateBill("nodelivery")
                     }
                     //2 -> {
@@ -280,6 +288,14 @@ class CustomerConfirmFragment : BaseFragment(R.layout.fragment_payment_confirm),
                     //    orderData["paid"]="Yes"
                     //    updateBill("nodelivery")
                     //}
+                    1 -> {
+                        Toast.makeText(
+                            activity as Context,
+                            "Delivery is currently not available",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        deliveryModeSpinner.setSelection(0)
+                    }
                 }
                 //if(position!=0) {
                 selectDeliveryTag.visibility = View.GONE
@@ -304,6 +320,7 @@ class CustomerConfirmFragment : BaseFragment(R.layout.fragment_payment_confirm),
             "nodelivery" -> {
                 deliveryCharges = 0
                 deliveryChargesView.text = "No delivery"
+                addAmountForFreeDeliveryWrapper.visibility = View.GONE
                 orderData["deliverycharges"] = "0"
                 orderData.remove("customeraddress")
                 orderData.remove("customerphone")
@@ -312,13 +329,16 @@ class CustomerConfirmFragment : BaseFragment(R.layout.fragment_payment_confirm),
             "freedelivery" -> {
                 deliveryCharges = 0
                 deliveryChargesView.text = "Free Delivery"
+                addAmountForFreeDeliveryWrapper.visibility = View.GONE
                 orderData["customeraddress"] = viewModel.getUserAddress()
                 orderData["customerphone"] = viewModel.getUserPhone()
                 subscribeObserver()
             }
             "paiddelivery" -> {
-
-                deliveryChargesView.text = deliveryCharges.toString()
+                deliveryChargesView.text = "₹$deliveryCharges"
+                addAmountForFreeDeliveryWrapper.visibility = View.VISIBLE
+                addAmountForFreeDelivery.text =
+                    "₹${minAmount - orderData["itemprice"].toString().toInt()}"
                 orderData["customeraddress"] = viewModel.getUserAddress()
                 orderData["customerphone"] = viewModel.getUserPhone()
                 orderData["deliverycharges"] = deliveryCharges.toString()
@@ -385,7 +405,7 @@ class CustomerConfirmFragment : BaseFragment(R.layout.fragment_payment_confirm),
     private fun createDialog() {
         val b = AlertDialog.Builder(context!!)
         b.setTitle("Order Booked")
-        b.setMessage("Your Order have been Booked.\ndfsjdn")
+        b.setMessage("Your Order have been Booked.")
         b.setPositiveButton("YAY!!") { _: DialogInterface, _: Int ->
             val intent = Intent(context, MainActivity::class.java)
             intent.putExtra(USER_TYPE, userType_CUSTOMER)

@@ -151,16 +151,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/list_item_current_order_instruction"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/list_item_current_order_markpacked_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Mark Packed"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/list_item_current_order_status"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

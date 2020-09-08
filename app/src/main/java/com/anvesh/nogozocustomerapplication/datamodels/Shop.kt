@@ -12,9 +12,13 @@ class Shop {
 
     var shopAddress: String? = null
 
+    var homebusiness: String? = null
+
     var shopCurrentStatus: String? = null
 
-    var shopAreaId: String? = "-1"
+    var deliveryStatus: String? = null
+
+    var shopAreaId: String? = null
 
     constructor(shopName: String, shopId: String, imageUrl: String?, shopCurrentStatus: String?, shopAreaId: String?){
         this.shopId = shopId

@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.anvesh.nogozocustomerapplication.SessionManager
 import com.anvesh.nogozocustomerapplication.datamodels.Area
+import com.anvesh.nogozocustomerapplication.datamodels.AreaId
 import com.anvesh.nogozocustomerapplication.datamodels.City
 import com.anvesh.nogozocustomerapplication.network.Database
 import com.anvesh.nogozocustomerapplication.ui.userdetails.CityResource
@@ -27,6 +28,8 @@ class CustomerDetailsFragmentViewModel
 
     private var cities: MediatorLiveData<CityResource<List<City>>> = MediatorLiveData()
     private var areas: MediatorLiveData<CityResource<List<Area>>> = MediatorLiveData()
+    private var areaids: MediatorLiveData<CityResource<List<AreaId>>> = MediatorLiveData()
+
 
     fun getCities(): LiveData<CityResource<List<City>>>{
         cities.value = CityResource.loading()
@@ -70,6 +73,28 @@ class CustomerDetailsFragmentViewModel
         })
 
         return areas
+    }
+
+    fun getAreaIdsOfCity(cityId: String): LiveData<CityResource<List<AreaId>>>{
+        areaids.value = CityResource.loading()
+
+        Database().getAreaIds(cityId).addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                areaids.value = CityResource.error(error.message)
+            }
+            override fun onDataChange(snapshot: DataSnapshot) {
+                CoroutineScope(Dispatchers.Default).launch{
+                    val list: ArrayList<AreaId> = ArrayList()
+                    val map = snapshot.value as HashMap<String, String>
+                    for((key, value) in map){
+                        list.add(AreaId(value, key))
+                    }
+                    areaids.postValue(CityResource.success(list))
+                }
+            }
+        })
+
+        return areaids
     }
 
     fun updateUserProfile(map: HashMap<String, Any>): Task<Void> {

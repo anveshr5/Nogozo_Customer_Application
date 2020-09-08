@@ -1,8 +1,12 @@
 package com.anvesh.nogozocustomerapplication.ui.main.customer.shops
 
+import android.icu.util.ValueIterator
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
@@ -57,7 +61,7 @@ class ShopListFragment(
 
         service = Services(arguments!!.getString(SERVICE_ID,"-1"), arguments!!.getString(SERVICE_NAME,"-1"))
 
-        swipeRefresh.setOnRefreshListener{
+        swipeRefresh.setOnRefreshListener {
             swipeRefresh.isRefreshing = false
             viewModel.getShopsList(service?.serviceId!!)
         }

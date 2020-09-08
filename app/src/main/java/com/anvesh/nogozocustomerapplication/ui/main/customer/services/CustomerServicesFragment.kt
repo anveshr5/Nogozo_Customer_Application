@@ -14,6 +14,7 @@ import com.anvesh.nogozocustomerapplication.ui.BaseFragment
 import com.anvesh.nogozocustomerapplication.ui.ViewModelFactory
 import com.anvesh.nogozocustomerapplication.ui.main.Communicator
 import com.anvesh.nogozocustomerapplication.ui.main.DataResource
+import com.anvesh.nogozocustomerapplication.ui.main.customer.search.GlobalSearchFragment
 import com.anvesh.nogozocustomerapplication.util.VerticalSpacingItemDecoration
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class CustomerServicesFragment(private val communicator: Communicator): BaseFrag
     //@Inject
     //lateinit var factory: ViewModelFactory
 
-    @Inject
+    //@Inject
     lateinit var sessionManager: SessionManager
 
     private lateinit var viewModel: CustomerServiceFragmentViewModel
@@ -78,6 +79,7 @@ class CustomerServicesFragment(private val communicator: Communicator): BaseFrag
     }
 
     override fun onServiceClick(position: Int) {
+        GlobalSearchFragment.searchQuery = null
         communicator.onServiceSelected(adapter.getItemAt(position).serviceId!!, adapter.getItemAt(position).servicename!!)
     }
 

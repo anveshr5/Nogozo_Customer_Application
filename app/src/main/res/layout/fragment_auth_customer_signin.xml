@@ -29,9 +29,9 @@
 
     <ImageView
         android:id="@+id/icon_imageView"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="100dp"
-        android:src="@mipmap/app_icon"
+        android:src="@drawable/nogozo_header_icon"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -2,10 +2,10 @@ package com.anvesh.nogozocustomerapplication.util
 
 object Constants {
     const val BASE_URL = "http://nogozo.herokuapp.com/"
-
     const val CHOOSE_ON_MAP_REQUEST_CODE = 100
 
     const val userType_CUSTOMER = "customer"
+    const val userType_VENDOR = "shop"
     const val PROFILE_LEVEL_0 = "0"
     const val PROFILE_LEVEL_1 = "1"
 
@@ -25,6 +25,7 @@ object Constants {
 
     const val DIALOG_TYPE_CITY = "city"
     const val DIALOG_TYPE_AREA = "area"
+    const val DIALOG_TYPE_PINCODE = "pincode"
     const val SERVICE_ID = "serviceid"
     const val SERVICE_NAME = "servicename"
     const val SHOP_ID = "shopid"

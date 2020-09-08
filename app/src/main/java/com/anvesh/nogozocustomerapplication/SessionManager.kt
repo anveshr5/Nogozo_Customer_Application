@@ -38,7 +38,6 @@ class SessionManager
     private val preferences: SharedPreferences = SplashActivity.sharedPreferences
     private val editPreferences: SharedPreferences.Editor = preferences.edit()
 
-
     val currentSessionData: HashMap<String, String> by lazy {
         val data:HashMap<String, String> = HashMap()
         data[CITY_ID] = getCityId()
@@ -143,7 +142,7 @@ class SessionManager
             editPreferences.putString(NAME, map["name"] as String).apply()
             editPreferences.putString(ADDRESS, map["address"] as String).apply()
             editPreferences.putString(PHONE, map["phone"] as String).apply()
-            editPreferences.putString("Pincode",map["pincode"] as String).apply()
+            editPreferences.putString("areaid",map["areaid"] as String).apply()
 
             currentSessionData[AREA_NAME] = map["areaname"] as String
             currentSessionData[AREA_ID] = map["areaid"] as String

@@ -22,13 +22,16 @@ import com.anvesh.nogozocustomerapplication.util.Constants.userType_CUSTOMER
 import com.anvesh.nogozocustomerapplication.util.Helper
 import com.anvesh.nogozocustomerapplication.R
 import com.anvesh.nogozocustomerapplication.datamodels.Area
+import com.anvesh.nogozocustomerapplication.datamodels.AreaId
 import com.anvesh.nogozocustomerapplication.datamodels.City
 import com.anvesh.nogozocustomerapplication.ui.BaseFragment
 import com.anvesh.nogozocustomerapplication.ui.ViewModelFactory
 import com.anvesh.nogozocustomerapplication.ui.main.MainActivity
+import com.anvesh.nogozocustomerapplication.ui.userdetails.AreaIdListAdapter
 import com.anvesh.nogozocustomerapplication.ui.userdetails.AreaListAdapter
 import com.anvesh.nogozocustomerapplication.ui.userdetails.CityListAdapter
 import com.anvesh.nogozocustomerapplication.ui.userdetails.CityResource
+import com.anvesh.nogozocustomerapplication.util.Constants.DIALOG_TYPE_PINCODE
 import javax.inject.Inject
 
 
@@ -41,14 +44,17 @@ class CustomerDetailsFragment: BaseFragment(R.layout.fragment_userdetails_custom
     private lateinit var addressField: TextView
     private lateinit var citySpinner: TextView
     private lateinit var areaSpinner: TextView
+    private lateinit var areaIdSpinner: TextView
     private lateinit var cityCard: CardView
     private lateinit var areaCard: CardView
+    private lateinit var areaIdCard: CardView
     private lateinit var nameField: TextInputEditText
     private lateinit var phoneField: TextInputEditText
     private lateinit var addressWrapper: TextInputLayout
     private lateinit var confirmButton: MaterialButton
     private var selectedCity: City? = null
     private var selectedArea: Area? = null
+    private var selectedAreaId: AreaId? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -57,6 +63,7 @@ class CustomerDetailsFragment: BaseFragment(R.layout.fragment_userdetails_custom
 
         areaCard = view.findViewById(R.id.customer_userdetails_area_wrapper)
         cityCard = view.findViewById(R.id.customer_userdetails_city_wrapper)
+        areaIdCard = view.findViewById(R.id.customer_userdetails_area_id_wrapper)
         addressWrapper = view.findViewById(R.id.customer_userdetails_address_wrapper)
         nameField = view.findViewById(R.id.customer_userdetails_name_field)
         phoneField = view.findViewById(R.id.customer_userdetails_phone_field)
@@ -64,6 +71,8 @@ class CustomerDetailsFragment: BaseFragment(R.layout.fragment_userdetails_custom
         citySpinner.setOnClickListener(this)
         areaSpinner = view.findViewById(R.id.customer_userdetails_area_view)
         areaSpinner.setOnClickListener(this)
+        areaIdSpinner = view.findViewById(R.id.customer_userdetails_area_id_view)
+        areaIdSpinner.setOnClickListener(this)
         confirmButton = view.findViewById(R.id.customer_userdetails_confirm_button)
         confirmButton.setOnClickListener(this)
 
@@ -76,6 +85,9 @@ class CustomerDetailsFragment: BaseFragment(R.layout.fragment_userdetails_custom
             }
             R.id.customer_userdetails_area_view -> {
                 openDialogForSelecting(DIALOG_TYPE_AREA, selectedCity!!.cityId)
+            }
+            R.id.customer_userdetails_area_id_view ->{
+                openDialogForSelecting(DIALOG_TYPE_PINCODE, selectedCity!!.cityId)
             }
             R.id.customer_userdetails_confirm_button -> {
                 updateUserProfile()
@@ -98,8 +110,22 @@ class CustomerDetailsFragment: BaseFragment(R.layout.fragment_userdetails_custom
     }
 
     private fun onAreaSelected(area: Area){
+        if (selectedArea != null){
+            if (selectedArea!!.areaId == area.areaId && selectedArea!!.areaName == area.areaName){
+                return
+            }
+        }
         selectedArea = area
         areaSpinner.text = area.areaName
+        selectedAreaId = null
+        areaIdSpinner.text = "Select Your Area Id"
+        areaIdCard.visibility = View.VISIBLE
+        checkAndShowButton()
+    }
+
+    private fun onAreaIdSelected(area: AreaId){
+        selectedAreaId = area
+        areaIdSpinner.text = area.areaId
         addressWrapper.visibility = View.VISIBLE
         checkAndShowButton()
     }
@@ -196,6 +222,47 @@ class CustomerDetailsFragment: BaseFragment(R.layout.fragment_userdetails_custom
                     }
                 }
             })
+        } else if(type == DIALOG_TYPE_PINCODE){
+            header.text = "Choose Your Pincode"
+            viewModel.getAreaIdsOfCity(cityid).removeObservers(viewLifecycleOwner)
+
+            viewModel.getAreaIdsOfCity(cityid).observe(viewLifecycleOwner, Observer {
+                when(it.status){
+                    CityResource.CityStatus.SUCCESS->{
+                        progressBar.visibility = View.INVISIBLE
+
+                        searchView.setQuery("",false)
+                        val adapter = AreaIdListAdapter()
+                        listView.adapter = adapter
+                        adapter.setOriginalList(it.data)
+
+                        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+                            override fun onQueryTextSubmit(query: String?): Boolean {
+                                return false
+                            }
+
+                            override fun onQueryTextChange(newText: String?): Boolean {
+                                adapter.getFilter().filter(newText)
+                                return true
+                            }
+                        })
+
+                        listView.onItemClickListener = AdapterView.OnItemClickListener{ parent, view, position, id ->
+                            if(adapter.getItem(position).areaNum != "-1"){
+                                onAreaIdSelected(adapter.getItem(position))
+                                dialog.dismiss()
+                            }
+                        }
+                    }
+                    CityResource.CityStatus.LOADING -> {
+                        progressBar.visibility = View.VISIBLE
+                    }
+                    CityResource.CityStatus.ERROR -> {
+                        progressBar.visibility = View.INVISIBLE
+                        Toast.makeText(context, "Something Went Wrong", Toast.LENGTH_LONG).show()
+                    }
+                }
+            })
         }
 
         dialog.show()
@@ -203,7 +270,7 @@ class CustomerDetailsFragment: BaseFragment(R.layout.fragment_userdetails_custom
     }
 
     private fun checkAndShowButton(){
-        if(selectedCity != null && selectedArea != null){
+        if(selectedCity != null && selectedArea != null && selectedAreaId != null){
             confirmButton.visibility = View.VISIBLE
         }else{
             confirmButton.visibility = View.INVISIBLE
@@ -237,7 +304,7 @@ class CustomerDetailsFragment: BaseFragment(R.layout.fragment_userdetails_custom
         map["cityname"] = selectedCity!!.cityName
         map["cityid"] = selectedCity!!.cityId
         map["areaname"] = selectedArea!!.areaName
-        map["areaid"] = selectedArea!!.areaId
+        map["areaid"] = selectedAreaId!!.areaId
         map["address"] = address
         map["profilelevel"] = PROFILE_LEVEL_1
 

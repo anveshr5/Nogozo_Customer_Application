@@ -1,5 +1,7 @@
 package com.anvesh.nogozocustomerapplication.ui.profile
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.anvesh.nogozocustomerapplication.R
@@ -9,9 +11,16 @@ import com.anvesh.nogozocustomerapplication.util.Constants.USER_TYPE
 import com.anvesh.nogozocustomerapplication.util.Constants.userType_CUSTOMER
 
 class ProfileActivity : BaseActivity() {
+
+    companion object {
+        lateinit var sharedPreferences: SharedPreferences
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+
+        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
         val userType = intent.getStringExtra(USER_TYPE)
         if(userType == userType_CUSTOMER)

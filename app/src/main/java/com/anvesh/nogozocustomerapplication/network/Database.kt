@@ -58,6 +58,11 @@ class Database {
             .child("arealist").child(cityId)
     }
 
+    fun getAreaIds(cityId: String): DatabaseReference {
+        return FirebaseDatabase.getInstance().reference
+            .child("areaidlist").child(cityId)
+    }
+
     fun getServices(): Query {
         return FirebaseDatabase.getInstance().reference
             .child("service").orderByChild("priority")
@@ -90,6 +95,11 @@ class Database {
         return FirebaseDatabase.getInstance().reference
             .child("users").child("shop")
             .child(shopId).child("status")
+    }
+
+    fun getShopBusinessType(shopId: String): DatabaseReference {
+        return FirebaseDatabase.getInstance()
+            .getReference("/users/shop/${shopId}/profile/homebusiness")
     }
 
     fun getFare(
@@ -132,12 +142,6 @@ class Database {
     }
 
 
-    fun markedOrderPacked(orderId: String, status: String): Task<Void> {
-        return FirebaseDatabase.getInstance().reference
-            .child("orders").child(orderId)
-            .child("status").setValue(status)
-    }
-
     fun searchItemsinCity(query: String, cityId: String): Task<HttpsCallableResult> {
         val data: HashMap<String, String> = HashMap()
         data["query"] = query
@@ -162,18 +166,18 @@ class Database {
     fun getDeliveryStatus(shopId: String): DatabaseReference {
         return FirebaseDatabase.getInstance().reference
             .child("users").child("shop")
-            .child(shopId).child("deliverystatus")
+            .child(shopId).child("profile").child("deliverystatus")
     }
 
     fun getDeliveryCharges(shopId: String): DatabaseReference {
         return FirebaseDatabase.getInstance().reference.child("users")
-            .child("shop").child(shopId)
+            .child("shop").child(shopId).child("profile")
             .child("deliverycharges")
     }
 
     fun getDeliveryMinOrder(shopId: String): DatabaseReference {
         return FirebaseDatabase.getInstance().reference.child("users")
-            .child("shop").child(shopId)
+            .child("shop").child(shopId).child("profile")
             .child("deliveryminorder")
     }
 

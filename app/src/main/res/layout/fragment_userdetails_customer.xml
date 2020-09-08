@@ -105,6 +105,30 @@
             />
     </androidx.cardview.widget.CardView>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/customer_userdetails_area_id_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/customer_userdetails_area_wrapper"
+        app:cardCornerRadius="3dp"
+        app:cardElevation="3dp"
+        android:visibility="invisible">
+        <TextView
+            android:id="@+id/customer_userdetails_area_id_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:text="Select Your Area"
+            android:layout_margin="8dp"
+            android:drawableEnd="@drawable/ic_greater_symbol"
+            />
+    </androidx.cardview.widget.CardView>
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/customer_userdetails_address_wrapper"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -117,7 +141,7 @@
         app:boxStrokeColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/customer_userdetails_area_wrapper"
+        app:layout_constraintTop_toBottomOf="@id/customer_userdetails_area_id_wrapper"
         android:visibility="invisible">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/customer_userdetails_address_field"

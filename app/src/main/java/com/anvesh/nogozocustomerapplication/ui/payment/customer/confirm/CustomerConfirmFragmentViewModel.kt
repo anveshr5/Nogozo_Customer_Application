@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.anvesh.nogozocustomerapplication.SessionManager
+import com.anvesh.nogozocustomerapplication.datamodels.VendorProfile
 import com.anvesh.nogozocustomerapplication.network.Database
 import com.anvesh.nogozocustomerapplication.ui.main.DataResource
 import com.anvesh.nogozocustomerapplication.util.Constants.AREA_ID
@@ -12,6 +13,7 @@ import com.anvesh.nogozocustomerapplication.util.Constants.CITY_ID
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 class CustomerConfirmFragmentViewModel
@@ -28,6 +30,7 @@ class CustomerConfirmFragmentViewModel
     private val deliveryCharges: MediatorLiveData<String> = MediatorLiveData()
     private val shopPincode: MediatorLiveData<String> = MediatorLiveData()
     private val deliveryMinOrder: MediatorLiveData<String> = MediatorLiveData()
+    private val vendor: MediatorLiveData<VendorProfile> = MediatorLiveData()
 
 
     val extraFare: MediatorLiveData<DataResource<HashMap<String, String>>> = MediatorLiveData()
@@ -52,8 +55,25 @@ class CustomerConfirmFragmentViewModel
         return sessionManager.getUserPincode()
     }
 
+    fun getVendorProfile(shopId: String){
+        FirebaseDatabase.getInstance().getReference("/users/shop/$shopId/profile").addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                vendor.value = snapshot.getValue(VendorProfile::class.java)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
+    fun getVendorProfileLiveData(): MediatorLiveData<VendorProfile>{
+        return vendor
+    }
+
     fun getShopPincode(shopId: String): String{
-        database.getShopPincode(shopId).addValueEventListener(object : ValueEventListener{
+        database.getShopAreaId(shopId).addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 shopPincode.value = snapshot.value as String
             }

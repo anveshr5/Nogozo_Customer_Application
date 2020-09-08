@@ -198,8 +198,8 @@
                         android:gravity="end"
                         android:textSize="12sp" />
                 </LinearLayout>
-
                 <LinearLayout
+                    android:id="@+id/addAmountForFreeDeliveryTag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -208,10 +208,29 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:text="Add amount to get free delivery"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/customer_free_delivery_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Grand Total"
                         android:textColor="@color/black"
                         android:textSize="24sp" />
-
                     <TextView
                         android:id="@+id/customer_confirm_total_price"
                         android:layout_width="match_parent"
@@ -221,6 +240,7 @@
                         android:textColor="@color/black"
                         android:textSize="24sp" />
                 </LinearLayout>
+
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
