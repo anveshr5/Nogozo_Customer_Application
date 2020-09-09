@@ -1,12 +1,9 @@
 package com.anvesh.nogozocustomerapplication.ui.main.customer.shops
 
-import android.icu.util.ValueIterator
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
@@ -21,11 +18,10 @@ import com.anvesh.nogozocustomerapplication.SessionManager
 import com.anvesh.nogozocustomerapplication.datamodels.Services
 import com.anvesh.nogozocustomerapplication.datamodels.Shop
 import com.anvesh.nogozocustomerapplication.ui.BaseFragment
-import com.anvesh.nogozocustomerapplication.ui.ViewModelFactory
 import com.anvesh.nogozocustomerapplication.ui.main.Communicator
 import com.anvesh.nogozocustomerapplication.ui.main.DataResource
 import com.anvesh.nogozocustomerapplication.util.VerticalSpacingItemDecoration
-import javax.inject.Inject
+import com.google.firebase.auth.FirebaseAuth
 
 class ShopListFragment(
     private val communicator: Communicator
@@ -34,7 +30,7 @@ class ShopListFragment(
     //@Inject
     //lateinit var factory: ViewModelFactory
     //@Inject
-    lateinit var sessionManager: SessionManager
+    var sessionManager: SessionManager = SessionManager()
 
     private lateinit var viewModel: ShopListFragmentViewModel
 
@@ -94,8 +90,9 @@ class ShopListFragment(
         viewModel.getShopLiveData().observe(viewLifecycleOwner, Observer {
             when(it!!.status){
                 DataResource.Status.SUCCESS -> {
+                    val setList = sortData(it.data)
                     progressBar.visibility = View.GONE
-                    adapter.setItemList(it.data)
+                    adapter.setItemList(setList)
                 }
                 DataResource.Status.ERROR -> {
                     progressBar.visibility = View.GONE
@@ -107,6 +104,27 @@ class ShopListFragment(
             }
         })
         viewModel.getShopsList(serviceId)
+    }
+
+    private fun sortData(data: ArrayList<Shop>): ArrayList<Shop> {
+        val oldList = data
+        val newList: ArrayList<Shop> = ArrayList()
+        val userUID: String = sessionManager.getAreaId()
+
+        Log.d("shopppp", userUID)
+        oldList.forEach {
+            if (it.shopAreaId == userUID && it.deliveryStatus == "Delivering")
+                newList.add(it)
+        }
+        oldList.removeAll(newList)
+        oldList.forEach {
+            if (it.shopAreaId == userUID)
+                newList.add(it)
+        }
+        oldList.removeAll(newList)
+        newList.addAll(oldList)
+
+        return newList
     }
 
     override fun onShopClick(shop: Shop) {

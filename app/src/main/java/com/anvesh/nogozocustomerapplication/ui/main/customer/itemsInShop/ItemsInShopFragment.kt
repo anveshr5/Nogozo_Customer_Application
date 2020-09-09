@@ -90,7 +90,8 @@ class ItemsInShopFragment(
             arguments!!.getString(SHOP_ID, "-1"),
             "",
             arguments!!.getString(SHOP_STATUS, "-1"),
-            arguments!!.getString(AREA_ID, "-1")
+            arguments!!.getString(AREA_ID, "-1"),
+            arguments!!.getString("delivery_status", "-1")
         )
         shop!!.shopAddress = arguments!!.getString(SHOP_ADDRESS, "")
 

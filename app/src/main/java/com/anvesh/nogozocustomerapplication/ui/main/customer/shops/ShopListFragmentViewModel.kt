@@ -57,11 +57,12 @@ class ShopListFragmentViewModel
                                         key,
                                         shop["imageurl"],
                                         shop["status"],
-                                        shop["areaid"]
+                                        shop["areaid"],
+                                        shop["deliverystatus"]
                                     )
                                 )
-                                Log.d("shopp", shop.toString())
                             }
+
                             shopList.postValue(DataResource.success(shops))
                         } else {
                             shopList.postValue(DataResource.error("No Shops in Your Area"))

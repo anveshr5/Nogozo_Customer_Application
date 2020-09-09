@@ -4,20 +4,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.anvesh.nogozocustomerapplication.R
-import com.anvesh.nogozocustomerapplication.SessionManager
 import com.anvesh.nogozocustomerapplication.datamodels.Item
 import com.anvesh.nogozocustomerapplication.datamodels.Shop
 import com.anvesh.nogozocustomerapplication.network.Database
 import com.anvesh.nogozocustomerapplication.ui.main.customer.search.GlobalSearchFragment
 import com.anvesh.nogozocustomerapplication.ui.main.customer.search.ItemInShopGlobalSearchAdapter
-import com.anvesh.nogozocustomerapplication.util.ShopListComparator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -33,7 +30,6 @@ class ShopListAdapter(private val onShopClickInterface: OnShopClickInterface) :
 
     private var originalList: List<Shop> = arrayListOf()
     private var filteredList: List<Shop> = arrayListOf()
-    private var comparator: Comparator<Shop> = ShopListComparator(SessionManager().getAreaId())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopsViewHolder {
         val v = LayoutInflater.from(parent.context)
@@ -259,20 +255,14 @@ class ShopListAdapter(private val onShopClickInterface: OnShopClickInterface) :
 
                         })
                 }
+                //sortLists()
             }
         }
-//        this.filteredList = this.filteredList.sortedWith(compareBy<Shop>
-        //          {it.shopAreaId.equals(SessionManager().getUserId())}.thenBy{it.deliveryStatus}.thenByDescending { it.shopName })
-        //    filteredList.forEach{
-        //      Log.d("datalist", it.shopName + "    ${it.shopAreaId}    ${it.deliveryStatus}")
-        //}
-        //this.originalList = this.originalList.sortedWith(compareBy<Shop>
-        //{it.shopAreaId.equals(SessionManager().getUserId())}.thenBy{it.deliveryStatus}.thenBy { it.shopName })
     }
 
     fun sortLists() {
         filteredList = filteredList.sortedWith(compareBy<Shop>
-        { it.shopAreaId.equals(FirebaseAuth.getInstance().uid) }.thenBy { it.deliveryStatus }
+        { it.shopAreaId}.thenBy { it.deliveryStatus }
             .thenByDescending { it.shopName })
 
         originalList = originalList.sortedWith(compareBy<Shop>
@@ -299,7 +289,7 @@ class ShopListAdapter(private val onShopClickInterface: OnShopClickInterface) :
                         }
                     }
                     if (results.isEmpty()) {
-                        results.add(Shop("No Shop Found", "-1", "", "", "-1"))
+                        results.add(Shop("No Shop Found", "-1", "", "", "-1",""))
                     }
                     oReturn.values = results
                 }

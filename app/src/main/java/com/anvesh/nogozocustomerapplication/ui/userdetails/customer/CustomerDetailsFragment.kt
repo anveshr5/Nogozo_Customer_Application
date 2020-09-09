@@ -118,7 +118,7 @@ class CustomerDetailsFragment: BaseFragment(R.layout.fragment_userdetails_custom
         selectedArea = area
         areaSpinner.text = area.areaName
         selectedAreaId = null
-        areaIdSpinner.text = "Select Your Area Id"
+        areaIdSpinner.text = "Select Your Pincode"
         areaIdCard.visibility = View.VISIBLE
         checkAndShowButton()
     }

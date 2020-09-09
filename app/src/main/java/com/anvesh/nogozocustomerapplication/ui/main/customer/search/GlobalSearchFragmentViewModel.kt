@@ -48,7 +48,7 @@ class GlobalSearchViewModel
                                 CoroutineScope(Dispatchers.Default).launch {
                                     val shopList: ArrayList<Shop> = ArrayList()
                                     for ((key, value) in data) {
-                                        shopList.add(Shop(value, key, null, null, "-1"))
+                                        shopList.add(Shop(value, key, null, null, "-1","-1"))
                                     }
                                     queryResult.postValue(DataResource.success(shopList))
                                 }

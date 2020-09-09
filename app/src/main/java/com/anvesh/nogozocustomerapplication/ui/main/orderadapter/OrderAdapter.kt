@@ -66,7 +66,7 @@ class OrderAdapter(
         } else {
             when (orderList[position].status) {
                 "0" -> holder.status.text = "Packing Your Order"
-                "1" -> holder.status.text = "Delivery Executive reaching to Shop"
+                "1" -> holder.status.text = "Order ready to pick up at Shop"
                 "2" -> holder.status.text = "Order is ready to pick up"
                 "3" -> holder.status.text = "Picked Up"
                 "-1"-> holder.status.text = "Cancelled"
