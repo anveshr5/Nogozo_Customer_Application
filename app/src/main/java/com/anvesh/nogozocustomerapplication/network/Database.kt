@@ -31,8 +31,6 @@ class Database {
             .child("users").child(userType)
             .child(FirebaseAuth.getInstance().currentUser!!.uid).child("profile")
 
-        initialiseWallet()
-
         return ref.updateChildren(map)
     }
 
